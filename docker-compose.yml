@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - GitHub__ClientId=${GITHUB_CLIENT_ID}
+      - GitHub__ClientSecret=${GITHUB_CLIENT_SECRET}
+      - GitHub__RedirectUri=http://localhost:5000/auth/callback
+      - GitHub__FrontendUrl=http://localhost
+      - RapidApi__Key=${RAPIDAPI_KEY}
+      - RapidApi__Host=weatherapi-com.p.rapidapi.com
+      - RapidApi__BaseUrl=https://weatherapi-com.p.rapidapi.com
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
